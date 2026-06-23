@@ -34,18 +34,17 @@ La sécurité est assurée par **Spring Security + JWT** :
 
 # 3. Choix technologiques
 
-| Technologie | Utilisation |
-|------------|-------------|
-| Java 21 | Langage backend |
-| Spring Boot | Framework principal |
+| Technologie     | Utilisation |
+|-----------------|-------------|
+| Java 25         | Langage backend |
+| Spring Boot     | Framework principal |
 | Spring Security | Sécurité |
-| JWT | Authentification stateless |
+| JWT             | Authentification stateless |
 | Spring Data JPA | ORM |
-| MySQL | Base de données |
-| Maven | Gestion des dépendances |
-| Docker | Conteneurisation |
-| Git/GitHub | Versioning |
-| Postman | Test des API |
+| MySQL           | Base de données |
+| Maven           | Gestion des dépendances |
+| Docker          | Conteneurisation |
+| Git/GitHub      | Versioning |
 
 ---
 
