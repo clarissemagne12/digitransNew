@@ -29,9 +29,6 @@ La sécurité est assurée par **Spring Security + JWT** :
 
 ### Rôles :
 - ADMIN
-- GESTIONNAIRE
-- ASSURE
-- EXPERT
 
 ---
 
@@ -65,7 +62,7 @@ La sécurité est assurée par **Spring Security + JWT** :
 
 ### MySQL
 - Base relationnelle fiable
-- Adaptée aux données structurées (contrats, sinistres)
+- Adaptée aux données structurées 
 
 ### Docker
 - Déploiement portable
