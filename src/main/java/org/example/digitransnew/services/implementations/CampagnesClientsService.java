@@ -1,0 +1,85 @@
+package org.example.digitransnew.services.implementations;
+
+import org.example.digitransnew.dtos.CampagnesClientsDto;
+import org.example.digitransnew.entities.CampagnesClients;
+import org.example.digitransnew.entities.CampagnesClientsPK;
+import org.example.digitransnew.exceptions.ApiException;
+import org.example.digitransnew.mappers.CampagnesClientsMapper;
+import org.example.digitransnew.repositories.CampagnesClientsRepo;
+import org.example.digitransnew.services.interfaces.CampagnesClientsInterface;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class CampagnesClientsService implements CampagnesClientsInterface {
+
+    private final CampagnesClientsRepo campagnesClientsRepo;
+    private final CampagnesClientsMapper campagnesClientsMapper;
+
+    public CampagnesClientsService(CampagnesClientsRepo campagnesClientsRepo,
+                                   CampagnesClientsMapper campagnesClientsMapper) {
+        this.campagnesClientsRepo = campagnesClientsRepo;
+        this.campagnesClientsMapper = campagnesClientsMapper;
+    }
+
+    @Override
+    public CampagnesClientsDto save(CampagnesClientsDto campagnesClientsDto) {
+
+        if (campagnesClientsDto == null || campagnesClientsDto.getCampagneId() == null || campagnesClientsDto.getClientId() == null) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Données de campagne-client invalides");
+        }
+
+        CampagnesClients campagnesClients =
+                campagnesClientsMapper.toEntity(campagnesClientsDto);
+
+        return campagnesClientsMapper.toDto(
+                campagnesClientsRepo.save(campagnesClients)
+        );
+    }
+
+    @Override
+    public CampagnesClientsDto findById(Long campagneId, Long clientId) {
+
+        if (campagneId == null || clientId == null) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Identifiants de campagne-client invalides");
+        }
+
+        CampagnesClientsPK pk = new CampagnesClientsPK();
+        pk.setCampagneId(campagneId);
+        pk.setClientId(clientId);
+
+        return campagnesClientsRepo.findById(pk)
+                .map(campagnesClientsMapper::toDto)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Association campagne-client introuvable"));
+    }
+
+    @Override
+    public List<CampagnesClientsDto> findAll() {
+
+        return campagnesClientsRepo.findAll()
+                .stream()
+                .map(campagnesClientsMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void delete(Long campagneId, Long clientId) {
+
+        if (campagneId == null || clientId == null) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Identifiants de campagne-client invalides");
+        }
+
+        CampagnesClientsPK pk = new CampagnesClientsPK();
+        pk.setCampagneId(campagneId);
+        pk.setClientId(clientId);
+
+        if (!campagnesClientsRepo.existsById(pk)) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "Association campagne-client introuvable");
+        }
+
+        campagnesClientsRepo.deleteById(pk);
+    }
+}
